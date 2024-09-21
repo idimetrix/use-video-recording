@@ -30,7 +30,7 @@ const VideoRecorder: React.FC = () => {
         isRecording,
         isPaused,
         videoStream
-    } = useVideoRecorder();
+    } = useVideoRecording();
 
     const [videoSrc, setVideoSrc] = useState<string | null>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
