@@ -1,20 +1,31 @@
 # use-video-recording
 
-Use Video Recording
+A powerful and easy-to-use React hook for video recording functionality. This hook provides a complete interface for recording video using the MediaRecorder API with support for pause, resume, and stop operations.
+
+## Features
+
+- 🎥 Start, pause, resume, and stop video recording
+- 🎛️ Complete control over recording state
+- 📱 Works with device cameras
+- 🔄 Real-time video stream access
+- 💾 Generate video blobs for download or upload
+- 🎯 TypeScript support
+- ⚡ Lightweight and performant
 
 ## Installation
 
-To install the package, use npm:
-
 ```bash
-pnpm add use-video-recording
-
-yarn install use-video-recording
-
+# npm
 npm install use-video-recording
+
+# yarn
+yarn add use-video-recording
+
+# pnpm
+pnpm add use-video-recording
 ```
 
-## Usage
+## Quick Start
 
 ```tsx
 import React, { useRef, useState } from 'react';
@@ -43,11 +54,21 @@ const VideoRecorder: React.FC = () => {
     return (
         <div>
             <h2>Video Recorder</h2>
-            <video ref={videoRef} autoPlay playsInline muted style={{ width: '400px', height: '300px' }}>
-                {videoStream && <source src={URL.createObjectURL(videoStream)} />}
-            </video>
+            
+            {/* Live preview */}
+            {videoStream && (
+                <video 
+                    ref={videoRef} 
+                    autoPlay 
+                    playsInline 
+                    muted 
+                    style={{ width: '400px', height: '300px', border: '1px solid #ccc' }}
+                    srcObject={videoStream}
+                />
+            )}
 
-            <div>
+            {/* Controls */}
+            <div style={{ margin: '10px 0' }}>
                 <button onClick={startRecording} disabled={isRecording}>
                     Start Recording
                 </button>
@@ -61,14 +82,24 @@ const VideoRecorder: React.FC = () => {
                     Stop
                 </button>
                 <button onClick={handleComplete}>
-                    Complete
+                    Complete & Generate Video
                 </button>
             </div>
 
+            {/* Recording status */}
+            <div>
+                Status: {isRecording ? (isPaused ? 'Paused' : 'Recording') : 'Stopped'}
+            </div>
+
+            {/* Recorded video playback */}
             {videoSrc && (
-                <div>
+                <div style={{ marginTop: '20px' }}>
                     <h3>Recorded Video:</h3>
-                    <video controls src={videoSrc} style={{ width: '400px', height: '300px' }}></video>
+                    <video 
+                        controls 
+                        src={videoSrc} 
+                        style={{ width: '400px', height: '300px', border: '1px solid #ccc' }}
+                    />
                 </div>
             )}
         </div>
@@ -78,44 +109,72 @@ const VideoRecorder: React.FC = () => {
 export default VideoRecorder;
 ```
 
-## tsup
-Bundle your TypeScript library with no config, powered by esbuild.
+## API Reference
 
-https://tsup.egoist.dev/
+### useVideoRecording()
 
-## How to use this
-1. install dependencies
-```
-# pnpm
-$ pnpm install
+Returns an object with the following properties and methods:
 
-# yarn
-$ yarn install
+#### Methods
 
-# npm
-$ npm install
-```
-2. Add your code to `src`
-3. Add export statement to `src/index.ts`
-4. Test build command to build `src`.
-Once the command works properly, you will see `dist` folder.
+- **`startRecording(): void`** - Starts video recording from the user's camera
+- **`pauseRecording(): void`** - Pauses the current recording
+- **`resumeRecording(): void`** - Resumes a paused recording
+- **`stopRecording(): void`** - Stops the current recording
+- **`completeRecording(): Promise<string | null>`** - Generates a video URL from recorded chunks
 
-```zsh
-# pnpm
-$ pnpm run build
+#### State Properties
 
-# yarn
-$ yarn run build
+- **`isRecording: boolean`** - Whether recording is currently active
+- **`isPaused: boolean`** - Whether recording is currently paused
+- **`videoStream: MediaStream | null`** - The current video stream for live preview
 
-# npm
-$ npm run build
-```
-5. Publish your package
+## Advanced Usage
 
-```zsh
-$ npm publish
+### Downloading Recorded Video
+
+```tsx
+const handleDownload = async () => {
+    const videoUrl = await completeRecording();
+    if (videoUrl) {
+        const a = document.createElement('a');
+        a.href = videoUrl;
+        a.download = `recording-${Date.now()}.webm`;
+        a.click();
+    }
+};
 ```
 
+### Custom Recording Options
 
-## test package
-https://www.npmjs.com/package/use-video-recording
+```tsx
+// The hook uses default MediaRecorder options, but you can extend functionality
+// by accessing the videoStream and creating your own MediaRecorder instance
+```
+
+## Browser Compatibility
+
+- Chrome/Chromium 47+
+- Firefox 29+
+- Safari 14.1+
+- Edge 79+
+
+## Requirements
+
+- React 16.8+ (hooks support)
+- Modern browser with MediaRecorder API support
+- User permission for camera access
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+MIT © [Dmitrii Selikhov](https://github.com/idimetrix)
+
+## Links
+
+- [NPM Package](https://www.npmjs.com/package/use-video-recording)
+- [GitHub Repository](https://github.com/idimetrix/use-video-recording)
+- [Issues](https://github.com/idimetrix/use-video-recording/issues)
