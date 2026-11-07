@@ -31,8 +31,7 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "test:ci": "jest --coverage --watchAll=false",
-    "validate": "npm run typecheck && npm run test:ci && npm run build",
-    "prepublishOnly": "npm run validate"
+    "validate": "npm run typecheck && npm run test:ci && npm run build"
   },
   "homepage": "https://github.com/idimetrix/use-video-recording#readme",
   "url": "https://github.com/idimetrix/use-video-recording/issue",
